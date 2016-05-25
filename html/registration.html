@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+  <link href='https://fonts.googleapis.com/css?family=Raleway:400,500,700,600' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Lora' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="../css/styles3.css">
+  <link rel="stylesheet" href="../css/main-styles.css">
+  <link rel="stylesheet" href="../css/registrationcss.css">
+	<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>DevMtin</title>
+</head>
+
+<body ng-controller="mainCtrl">
+	<header class="initial-header">
+    <div class="search-icon-container">
+      <img src="../images/Icons/Search.svg" alt="" />
+    </div>
+		<p>DevMountain</p>
+    <div class="hamburger-menu-container">
+      <img src="../images/Icons/Ham.svg" alt="" />
+    </div>
+	</header>
+
+  <section class="two-column-view">
+    <div class="left-column">
+      <p>Welcome to <a href="">DevMountain</a> Social</br>Add Some Info So Friends Can Find You</p>
+      <div class="input-fields-container">
+        <input id="name-input" placeholder="Full Name">
+        <input id="tagline-input" placeholder="Tagline">
+        <input id="profile-image-input" placeholder="Profile Image Url">
+        <input id="bio-input" placeholder="Bio">
+      </div>
+      <a ng-click="addUser()" ng-href="tabsviews.html"><button id="registration-save-changes-button">Save Changes</button></a>
+    </div>
+    <div class="triangle-images-column">
+      <div id="triangle-up">
+        <img src="" alt="" />
+      </div>
+      <div id="triangle-left">
+        <img src="" alt="" />
+      </div>
+    </div>
+  </section>
+
+  <footer class="nav-footer">
+      <h3>View Friends</h3>
+      <h3>Find Friends</h3>
+      <h3>Update Profile</h3>
+  </footer>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src="../js/app.js"></script>
+  <script src="../js/mainCtrl.js"></script>
+  <script src="../js/mainService.js"></script>
+
+</body>
+
+</html>
