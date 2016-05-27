@@ -11,14 +11,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>My Profile</title>
   </head>
-  <body ng-controller="mainCtrl">
+  <body ng-controller="browseCtrl">
     <header class="initial-header">
-      <div class="back-icon-container" onclick="history.go(-1);return false;">
+      <div class="back-icon-container">
+        <!-- onclick="history.go(-1);return false;" -->
         <img src="../images/Icons/Back-Arrow.svg" alt="" />
       </div>
-      <div class="profile-icon-container">
-        <img src="" alt="" />
-      </div>
+      <div class="profile-icon-container"><a href="registration.html">
+        <img ng-src="{{loggedInUser.profileUrl}}" alt="" />
+      </a></div>
   		<p>DevMountain</p>
       <div class="search-icon-container">
         <img src="../images/Icons/Search.svg" alt="" />
@@ -26,13 +27,13 @@
   	</header>
 
     <section class="two-column-view">
-      <div class="left-column">
-        <p id='my-profile-name'><span id='my-profile-first-name'</span>Chis</br><span id="my-profile-last-name">Johnson</span></p>
+      <div class="left-column" id='loggedInUserProfile'>
+        <p id='my-profile-name'><span id='my-profile-first-name'</span>{{loggedInUser.name}}</span></p>
         <p id="my-profile-tagline">
-          Some awesome tagline about you long
+          {{loggedInUser.tagline}}
         </p>
         <p id="my-profile-bio">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          {{loggedInUser.bio}}
         </p>
       </div>
       <div class="triangle-images-column">
@@ -45,34 +46,11 @@
       </div>
       <div class="friends-images-column">
         <div class="search-bar">
-          <!-- <div class="sortDirection">
-            <p>
-              ascending
-            </p>
-          </div> -->
-          <input class="friends-search-bar-input" type="text" placeholder="Friends"/>
-          <!-- <div class="search-bar-search-icon">
-            <img src="../images/Icons/Search.svg" alt="" />
-          </div> -->
+          <input class="friends-search-bar-input" type="text" placeholder="Friends" ng-model="currentFriendSearchFilter"/>
         </div>
         <div class="friends-images-grid">
-          <div class="friend-image">
-            <img src="" alt="" />
-          </div>
-          <div class="friend-image">
-            <img src="" alt="" />
-          </div>
-          <div class="friend-image">
-            <img src="" alt="" />
-          </div>
-          <div class="friend-image">
-            <img src="" alt="" />
-          </div>
-          <div class="friend-image">
-            <img src="" alt="" />
-          </div>
-          <div class="friend-image">
-            <img src="" alt="" />
+          <div class="friend-image" id="current-friend-image" ng-repeat="user in currentFriends | filter: currentFriendSearchFilter track by user._id">
+            <img ng-src="{{user.profileUrl}}" ng-click="updateSelectedFriend(user)" alt="" />
           </div>
         </div>
       </div>
@@ -83,55 +61,63 @@
               ascending
             </p>
           </div> -->
-          <input class="new-friends-search-bar-input" type="text" placeholder="Search For Friends"/>
+          <input class="new-friends-search-bar-input" ng-model="friendSearchFilter" type="text" placeholder="Search For Friends"/>
           <!-- <div class="search-bar-search-icon">
             <img src="../images/Icons/Search.svg" alt="" />
           </div> -->
         </div>
+
         <div class="friends-images-grid">
-          <div class="friend-image">
-            <img src="" alt="" />
-          </div>
-          <div class="friend-image">
-            <img src="" alt="" />
-          </div>
-          <div class="friend-image">
-            <img src="" alt="" />
-          </div>
-          <div class="friend-image">
-            <img src="" alt="" />
-          </div>
-          <div class="friend-image">
-            <img src="" alt="" />
-          </div>
-          <div class="friend-image">
-            <img src="" alt="" />
+          <div class="friend-image" ng-repeat="user in usersMinusFriends | filter: friendSearchFilter track by user._id">
+            <img ng-src="{{user.profileUrl}}" ng-click="updateSelectedFriend(user)" alt="" />
           </div>
         </div>
       </div>
       <div class="update-profile-column">
         <div class="update-profile-bar"><p>Profile Settings</p></div>
         <div class="input-fields-container">
-          <input id="name-input" placeholder="Full Name">
-          <input id="tagline-input" placeholder="Tagline">
-          <input id="profile-image-input" placeholder="Profile Image Url">
-          <input id="bio-input" placeholder="Bio">
+          <input id="name-input" ng-model="newName" placeholder="Full Name">
+          <input id="tagline-input" ng-model="newTagline" placeholder="Tagline">
+          <input id="profile-image-input" ng-model="newProfileUrl" placeholder="Profile Image Url">
+          <input id="bio-input" ng-model="newBio" placeholder="Bio">
         </div>
-        <div id='save-changes-bar' class="update-profile-bar"><p>Save Changes</p></div>
+        <div id='save-changes-bar' class="update-profile-bar" ng-click="updateInfo(newName, newTagline, newProfileUrl, newBio)"><p>Save Changes</p></div>
+      </div>
+
+      <section class="two-column-view" id="friend-profile-view">
+        <div class="left-column" id="friend-left-column">
+          <p id='my-profile-name'><span id='my-profile-first-name'</span>{{selectedFriend.name}}</span></p>
+          <p id="my-profile-tagline">
+            {{selectedFriend.tagline}}
+          </p>
+          <p id="my-profile-bio">
+            {{selectedFriend.bio}}
+          </p>
+          <button id="add-friend-button" ng-click="addFriend(); updateUsersMinusFriends()">ADD FRIEND</button>
+        </div>
+      <div class="triangle-images-column" id="friend-triangle-column">
+        <div id="triangle-up">
+          <img src="" alt="" />
+        </div>
+        <div id="triangle-left">
+          <img src="" alt="" />
+        </div>
       </div>
     </section>
 
+    </section>
+
     <footer class="nav-footer">
-        <h3 class="view-friends-tab">View Friends</h3>
-        <h3 class="find-friends-tab">Find Friends</h3>
+        <h3 class="view-friends-tab" ng-click="updateCurrentFriends()">View Friends</h3>
+        <h3 class="find-friends-tab" ng-click="updateUsersMinusFriends()">Find Friends</h3>
         <h3 class="update-profile-tab">Update Profile</h3>
     </footer>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="../js/jquery.js"></script>
     <script src="../js/app.js"></script>
-    <script src="../js/mainCtrl.js"></script>
-    <script src="../js/mainService.js"></script>
+    <script src="../js/browseCtrl.js"></script>
+    <script src="../js/usersService.js"></script>
   </body>
 </html>

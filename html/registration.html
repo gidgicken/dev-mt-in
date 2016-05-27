@@ -13,7 +13,7 @@
 	<title>DevMtin</title>
 </head>
 
-<body ng-controller="mainCtrl">
+<body ng-controller="registrationCtrl">
 	<header class="initial-header">
     <div class="search-icon-container">
       <img src="../images/Icons/Search.svg" alt="" />
@@ -25,15 +25,28 @@
 	</header>
 
   <section class="two-column-view">
-    <div class="left-column">
+    <div class="left-column" id='register-left-column'>
       <p>Welcome to <a href="">DevMountain</a> Social</br>Add Some Info So Friends Can Find You</p>
       <div class="input-fields-container">
-        <input id="name-input" placeholder="Full Name">
-        <input id="tagline-input" placeholder="Tagline">
-        <input id="profile-image-input" placeholder="Profile Image Url">
-        <input id="bio-input" placeholder="Bio">
+        <input id="name-input" ng-model="nameEntered" placeholder="Full Name">
+        <input id="tagline-input" ng-model="taglineEntered" placeholder="Tagline">
+        <input id="profile-image-input" ng-model="imageEntered" placeholder="Profile Image Url">
+        <input id="bio-input" ng-model="bioEntered" placeholder="Bio">
       </div>
-      <a ng-click="addUser()" ng-href="tabsviews.html"><button id="registration-save-changes-button">Save Changes</button></a>
+      <a ng-href="tabsviews.html" ng-click="addUser(nameEntered, taglineEntered, imageEntered, bioEntered)"><button id="registration-save-changes-button">Save Changes</button></a>
+      <!-- <a ng-href="tabsviews.html" ng-click="addUser()"><button id="registration-save-changes-button">Save Changes</button></a> -->
+
+
+        <a id='switch-to-log-in-button'>Already have an account? Log In</a>
+
+    </div>
+    <div class="left-column" id="log-in-left-column">
+      <p>Log In to Your DevMountain Account</p>
+      <div class="input-fields-container">
+        <input id="name-input" ng-model="logInName" placeholder="Full Name">
+      </div>
+        <a ng-click="logIn(logInName)"><button id="registration-save-changes-button">Log In</button></a>
+        <a id='switch-to-register-button'>Don't have an account? Register</a>
     </div>
     <div class="triangle-images-column">
       <div id="triangle-up">
@@ -53,9 +66,10 @@
 
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
   <script src="../js/app.js"></script>
-  <script src="../js/mainCtrl.js"></script>
-  <script src="../js/mainService.js"></script>
-
+  <script src="../js/registrationCtrl.js"></script>
+  <script src="../js/usersService.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="../js/jquery.js"></script>
 </body>
 
 </html>
